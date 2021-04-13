@@ -1,0 +1,1412 @@
+openapi: 3.0.3
+info:
+  title: Concurrent Online Adventure Land
+  description: An API for playing multi-user text adventures
+  version: 1.0.0
+servers:
+- url: /v1
+tags:
+- name: game
+- name: room
+- name: turn
+- name: item
+- name: event
+- name: player
+- name: character
+- name: location
+paths:
+  /game/{game_id}/character/{character_id}/turn:
+    post:
+      tags:
+      - turn
+      summary: Submit player turn
+      operationId: gameGame_idCharacterCharacter_idTurnPOST
+      parameters:
+      - name: game_id
+        in: path
+        description: The id of the game to edit
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: character_id
+        in: path
+        description: Player Character ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/TurnBody'
+      responses:
+        "201":
+          description: Turn submission response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TurnDetail'
+      x-swagger-router-controller: Turn
+  /game:
+    get:
+      tags:
+      - game
+      summary: Retrieve a list of games
+      operationId: gameGET
+      responses:
+        "200":
+          description: List of games
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfGames'
+      x-swagger-router-controller: Game
+    post:
+      tags:
+      - game
+      summary: Create a new game
+      operationId: gamePOST
+      requestBody:
+        $ref: '#/components/requestBodies/GameBody'
+      responses:
+        "201":
+          description: Game detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameDetail'
+      x-swagger-router-controller: Game
+  /game/{game_id}:
+    get:
+      tags:
+      - game
+      summary: Retrieve game details
+      operationId: gameGame_idGET
+      parameters:
+      - name: game_id
+        in: path
+        description: The id of the game to edit
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Game detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameDetail'
+      x-swagger-router-controller: Game
+    put:
+      tags:
+      - game
+      summary: Update game parameters
+      operationId: gameGame_idPUT
+      parameters:
+      - name: game_id
+        in: path
+        description: The id of the game to edit
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/GameBody'
+      responses:
+        "200":
+          description: Game detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameDetail'
+      x-swagger-router-controller: Game
+    delete:
+      tags:
+      - game
+      summary: Remove game
+      operationId: gameGame_idDELETE
+      parameters:
+      - name: game_id
+        in: path
+        description: The id of the game to edit
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Game deleted
+      x-swagger-router-controller: Game
+  /game/{game_id}/room:
+    get:
+      tags:
+      - room
+      summary: Retrieve all rooms
+      operationId: gameGame_idRoomGET
+      parameters:
+      - name: game_id
+        in: path
+        description: The id of the game to edit
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: List of rooms
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfRooms'
+      x-swagger-router-controller: Room
+    post:
+      tags:
+      - room
+      summary: Add a new room to a game
+      operationId: gameGame_idRoomPOST
+      parameters:
+      - name: game_id
+        in: path
+        description: The id of the game to edit
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/RoomBody'
+      responses:
+        "201":
+          description: Room detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoomDetail'
+      x-swagger-router-controller: Room
+  /game/{game_id}/room/{room_id}:
+    get:
+      tags:
+      - room
+      summary: Retrieve room details
+      operationId: gameGame_idRoomRoom_idGET
+      parameters:
+      - name: game_id
+        in: path
+        description: The id of the game to edit
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: room_id
+        in: path
+        description: UUID of a room
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Room detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoomDetail'
+      x-swagger-router-controller: Room
+    put:
+      tags:
+      - room
+      summary: Update room details
+      operationId: gameGame_idRoomRoom_idPUT
+      parameters:
+      - name: game_id
+        in: path
+        description: The id of the game to edit
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: room_id
+        in: path
+        description: UUID of a room
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/RoomBody'
+      responses:
+        "200":
+          description: Room detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoomDetail'
+      x-swagger-router-controller: Room
+    delete:
+      tags:
+      - room
+      summary: Remove room
+      operationId: gameGame_idRoomRoom_idDELETE
+      parameters:
+      - name: game_id
+        in: path
+        description: The id of the game to edit
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: room_id
+        in: path
+        description: UUID of a room
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Room deleted
+      x-swagger-router-controller: Room
+  /game/{game_id}/item:
+    get:
+      tags:
+      - item
+      summary: Retrieve all items
+      operationId: gameGame_idItemGET
+      parameters:
+      - name: game_id
+        in: path
+        description: The id of the game to edit
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: List of items
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfItems'
+      x-swagger-router-controller: Item
+    post:
+      tags:
+      - item
+      summary: Add a new item to a game
+      operationId: gameGame_idItemPOST
+      parameters:
+      - name: game_id
+        in: path
+        description: The id of the game to edit
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/ItemBody'
+      responses:
+        "201":
+          description: Item detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItemDetail'
+      x-swagger-router-controller: Item
+  /game/{game_id}/item/{item_id}:
+    get:
+      tags:
+      - item
+      summary: Retrieve item details
+      operationId: gameGame_idItemItem_idGET
+      parameters:
+      - name: game_id
+        in: path
+        description: The id of the game to edit
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: item_id
+        in: path
+        description: Item ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Item detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItemDetail'
+      x-swagger-router-controller: Item
+    put:
+      tags:
+      - item
+      summary: Update item details
+      operationId: gameGame_idItemItem_idPUT
+      parameters:
+      - name: game_id
+        in: path
+        description: The id of the game to edit
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: item_id
+        in: path
+        description: Item ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/ItemBody'
+      responses:
+        "200":
+          description: Item detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItemDetail'
+      x-swagger-router-controller: Item
+    delete:
+      tags:
+      - item
+      summary: Remove item
+      operationId: gameGame_idItemItem_idDELETE
+      parameters:
+      - name: game_id
+        in: path
+        description: The id of the game to edit
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: item_id
+        in: path
+        description: Item ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Item deleted
+      x-swagger-router-controller: Item
+  /game/{game_id}/event:
+    get:
+      tags:
+      - event
+      summary: Retrieve a list of events
+      operationId: gameGame_idEventGET
+      parameters:
+      - name: game_id
+        in: path
+        description: The id of the game to edit
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: List of events
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfEvents'
+      x-swagger-router-controller: Event
+    post:
+      tags:
+      - event
+      summary: Create a new event
+      operationId: gameGame_idEventPOST
+      parameters:
+      - name: game_id
+        in: path
+        description: The id of the game to edit
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/EventBody'
+      responses:
+        "201":
+          description: Event detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_201'
+      x-swagger-router-controller: Event
+  /game/{game_id}/event/{event_id}:
+    get:
+      tags:
+      - event
+      summary: Retrieve event details
+      operationId: gameGame_idEventEvent_idGET
+      parameters:
+      - name: game_id
+        in: path
+        description: The id of the game to edit
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: event_id
+        in: path
+        description: Event ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Event detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_201'
+      x-swagger-router-controller: Event
+    put:
+      tags:
+      - event
+      summary: Update event parameters
+      operationId: gameGame_idEventEvent_idPUT
+      parameters:
+      - name: game_id
+        in: path
+        description: The id of the game to edit
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: event_id
+        in: path
+        description: Event ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/EventBody'
+      responses:
+        "200":
+          description: Event detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_201'
+      x-swagger-router-controller: Event
+    delete:
+      tags:
+      - event
+      summary: Remove event
+      operationId: gameGame_idEventEvent_idDELETE
+      parameters:
+      - name: game_id
+        in: path
+        description: The id of the game to edit
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: event_id
+        in: path
+        description: Event ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Event deleted
+      x-swagger-router-controller: Event
+  /game/{game_id}/player/{player_id}/character:
+    post:
+      tags:
+      - character
+      summary: Create a new player character
+      operationId: gameGame_idPlayerPlayer_idCharacterPOST
+      parameters:
+      - name: game_id
+        in: path
+        description: The id of the game to edit
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: player_id
+        in: path
+        description: Player ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/CharacterBody'
+      responses:
+        "201":
+          description: Character detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CharacterDetail'
+      x-swagger-router-controller: Character
+  /game/{game_id}/location:
+    get:
+      tags:
+      - location
+      summary: Retrieve a list of locations
+      operationId: gameGame_idLocationGET
+      parameters:
+      - name: game_id
+        in: path
+        description: The id of the game to edit
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: List of locations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfLocation'
+      x-swagger-router-controller: Location
+    post:
+      tags:
+      - location
+      summary: Create a new location
+      operationId: gameGame_idLocationPOST
+      parameters:
+      - name: game_id
+        in: path
+        description: The id of the game to edit
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/LocationBody'
+      responses:
+        "201":
+          description: Location detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationDetail'
+      x-swagger-router-controller: Location
+  /game/{game_id}/location/{location_id}:
+    get:
+      tags:
+      - location
+      summary: Retrieve location details
+      operationId: gameGame_idLocationLocation_idGET
+      parameters:
+      - name: game_id
+        in: path
+        description: The id of the game to edit
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: location_id
+        in: path
+        description: The id of the location
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Location detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationDetail'
+      x-swagger-router-controller: Location
+    put:
+      tags:
+      - location
+      summary: Update location details
+      operationId: gameGame_idLocationLocation_idPUT
+      parameters:
+      - name: game_id
+        in: path
+        description: The id of the game to edit
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: location_id
+        in: path
+        description: The id of the location
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/LocationBody'
+      responses:
+        "200":
+          description: Location detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationDetail'
+      x-swagger-router-controller: Location
+    delete:
+      tags:
+      - location
+      summary: Remove location
+      operationId: gameGame_idLocationLocation_idDELETE
+      parameters:
+      - name: game_id
+        in: path
+        description: The id of the game to edit
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: location_id
+        in: path
+        description: The id of the location
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Location deleted
+      x-swagger-router-controller: Location
+  /player:
+    get:
+      tags:
+      - player
+      summary: Retrieve a list of players
+      operationId: playerGET
+      responses:
+        "200":
+          description: List of players
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfPlayers'
+      x-swagger-router-controller: Player
+    post:
+      tags:
+      - player
+      summary: Create a new player
+      operationId: playerPOST
+      requestBody:
+        $ref: '#/components/requestBodies/PlayerBody'
+      responses:
+        "201":
+          description: Player detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlayerDetail'
+      x-swagger-router-controller: Player
+  /player/{player_id}:
+    get:
+      tags:
+      - player
+      summary: Retrieve player details
+      operationId: playerPlayer_idGET
+      parameters:
+      - name: player_id
+        in: path
+        description: Player ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Player detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlayerDetail'
+      x-swagger-router-controller: Player
+    put:
+      tags:
+      - player
+      summary: Update player parameters
+      operationId: playerPlayer_idPUT
+      parameters:
+      - name: player_id
+        in: path
+        description: Player ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/PlayerBody'
+      responses:
+        "200":
+          description: Player detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlayerDetail'
+      x-swagger-router-controller: Player
+    delete:
+      tags:
+      - player
+      summary: Remove player
+      operationId: playerPlayer_idDELETE
+      parameters:
+      - name: player_id
+        in: path
+        description: Player ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Player deleted
+      x-swagger-router-controller: Player
+  /player/{player_id}/character:
+    get:
+      tags:
+      - character
+      summary: Retrieve a list of player characters
+      operationId: playerPlayer_idCharacterGET
+      parameters:
+      - name: player_id
+        in: path
+        description: Player ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: List of player characters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfCharacters'
+      x-swagger-router-controller: Character
+  /player/{player_id}/character/{character_id}:
+    get:
+      tags:
+      - character
+      summary: Retrieve player character details
+      operationId: playerPlayer_idCharacterCharacter_idGET
+      parameters:
+      - name: player_id
+        in: path
+        description: Player ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: character_id
+        in: path
+        description: Player Character ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Character detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CharacterDetail'
+      x-swagger-router-controller: Character
+    delete:
+      tags:
+      - character
+      summary: Remove player character
+      operationId: playerPlayer_idCharacterCharacter_idDELETE
+      parameters:
+      - name: player_id
+        in: path
+        description: Player ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: character_id
+        in: path
+        description: Player Character ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Player deleted
+      x-swagger-router-controller: Character
+components:
+  schemas:
+    ArrayOfGames:
+      type: array
+      items:
+        $ref: '#/components/schemas/Game'
+    Game:
+      allOf:
+      - $ref: '#/components/schemas/DBObjectBase'
+    GameDetail:
+      allOf:
+      - $ref: '#/components/schemas/Game'
+      - $ref: '#/components/schemas/GameSubmit'
+    GameSubmit:
+      allOf:
+      - $ref: '#/components/schemas/ObjectBase'
+      - type: object
+        properties:
+          description:
+            type: string
+          attributes:
+            type: object
+            additionalProperties:
+              type: string
+    CharacterSubmit:
+      allOf:
+      - $ref: '#/components/schemas/ObjectBase'
+    CharacterDetail:
+      allOf:
+      - $ref: '#/components/schemas/Character'
+      - $ref: '#/components/schemas/CharacterSubmit'
+      - type: object
+        properties:
+          game_id:
+            type: string
+          player_id:
+            type: string
+          location:
+            type: string
+          attributes:
+            type: object
+            additionalProperties:
+              type: string
+    TurnResponseStatus:
+      type: string
+      enum:
+      - OK
+      - ERROR
+    TurnDetail:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/TurnResponseStatus'
+        text:
+          type: string
+      example:
+        text: text
+        status: OK
+    TurnSubmit:
+      type: object
+      properties:
+        command:
+          type: string
+    EventItem:
+      type: object
+      properties:
+        id:
+          type: string
+        primitive:
+          type: string
+        arguments:
+          type: array
+          items:
+            type: string
+      example:
+        primitive: primitive
+        arguments:
+        - arguments
+        - arguments
+        id: id
+    EventItemList:
+      type: array
+      items:
+        $ref: '#/components/schemas/EventItem'
+    Event:
+      type: object
+      properties:
+        id:
+          type: string
+        command:
+          type: string
+        conditions:
+          $ref: '#/components/schemas/EventItemList'
+        true_part:
+          $ref: '#/components/schemas/EventItemList'
+        false_part:
+          $ref: '#/components/schemas/EventItemList'
+      example:
+        false_part: null
+        id: id
+        conditions:
+        - primitive: primitive
+          arguments:
+          - arguments
+          - arguments
+          id: id
+        - primitive: primitive
+          arguments:
+          - arguments
+          - arguments
+          id: id
+        true_part: null
+        command: command
+    ArrayOfEvents:
+      type: array
+      items:
+        $ref: '#/components/schemas/Event'
+    EventItemSubmit:
+      type: object
+      properties:
+        primitive:
+          type: string
+        arguments:
+          type: array
+          items:
+            type: string
+    EventItemSubmitList:
+      type: array
+      items:
+        $ref: '#/components/schemas/EventItemSubmit'
+    EventSubmit:
+      type: object
+      properties:
+        command:
+          type: string
+        conditions:
+          $ref: '#/components/schemas/EventItemSubmitList'
+        true_part:
+          $ref: '#/components/schemas/EventItemSubmitList'
+        false_part:
+          $ref: '#/components/schemas/EventItemSubmitList'
+    Room:
+      allOf:
+      - $ref: '#/components/schemas/DBObjectBase'
+    RoomDetail:
+      allOf:
+      - $ref: '#/components/schemas/Room'
+      - $ref: '#/components/schemas/RoomSubmit'
+    RoomSubmit:
+      allOf:
+      - $ref: '#/components/schemas/ObjectBase'
+      - type: object
+        properties:
+          game_id:
+            type: string
+          description:
+            type: string
+          attributes:
+            type: object
+            additionalProperties:
+              type: string
+    ArrayOfRooms:
+      type: array
+      items:
+        $ref: '#/components/schemas/Room'
+    Item:
+      allOf:
+      - $ref: '#/components/schemas/DBObjectBase'
+    ItemDetail:
+      allOf:
+      - $ref: '#/components/schemas/Item'
+      - $ref: '#/components/schemas/ItemSubmit'
+    ItemSubmit:
+      allOf:
+      - $ref: '#/components/schemas/ObjectBase'
+      - type: object
+        properties:
+          game_id:
+            type: string
+          title:
+            type: string
+          description:
+            type: string
+          aliases:
+            type: array
+            items:
+              type: string
+          attributes:
+            type: object
+            additionalProperties:
+              type: string
+    ArrayOfItems:
+      type: array
+      items:
+        $ref: '#/components/schemas/Item'
+    Player:
+      allOf:
+      - $ref: '#/components/schemas/DBObjectBase'
+    PlayerSubmit:
+      allOf:
+      - $ref: '#/components/schemas/ObjectBase'
+      - properties:
+          attributes:
+            type: object
+            additionalProperties:
+              type: string
+    PlayerDetail:
+      allOf:
+      - $ref: '#/components/schemas/Player'
+      - $ref: '#/components/schemas/PlayerSubmit'
+      - type: object
+        properties:
+          characters:
+            $ref: '#/components/schemas/ArrayOfCharacters'
+    ArrayOfPlayers:
+      type: array
+      items:
+        $ref: '#/components/schemas/Player'
+    Character:
+      allOf:
+      - $ref: '#/components/schemas/DBObjectBase'
+    ArrayOfCharacters:
+      type: array
+      items:
+        $ref: '#/components/schemas/Character'
+    DBObjectBase:
+      allOf:
+      - $ref: '#/components/schemas/ObjectBase'
+      - type: object
+        properties:
+          id:
+            type: string
+    ObjectBase:
+      type: object
+      properties:
+        title:
+          type: string
+    ArrayOfLocation:
+      type: array
+      items:
+        $ref: '#/components/schemas/Location'
+    Location:
+      type: object
+      properties:
+        id:
+          type: string
+      example:
+        id: id
+    LocationDetail:
+      allOf:
+      - $ref: '#/components/schemas/Location'
+      - $ref: '#/components/schemas/LocationSubmit'
+    LocationSubmit:
+      type: object
+      properties:
+        game_id:
+          type: string
+        room_id:
+          type: string
+        character_id:
+          type: string
+        item_id:
+          type: string
+    inline_response_201:
+      type: object
+      properties:
+        id:
+          type: string
+        command:
+          type: string
+        conditions:
+          $ref: '#/components/schemas/EventItemList'
+        true_part:
+          $ref: '#/components/schemas/EventItemList'
+        false_part:
+          $ref: '#/components/schemas/EventItemList'
+      example:
+        false_part: null
+        id: id
+        conditions:
+        - primitive: primitive
+          arguments:
+          - arguments
+          - arguments
+          id: id
+        - primitive: primitive
+          arguments:
+          - arguments
+          - arguments
+          id: id
+        true_part: null
+        command: command
+  responses:
+    GameListResponse:
+      description: List of games
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ArrayOfGames'
+    GameDetailResponse:
+      description: Game detail
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GameDetail'
+    RoomListResponse:
+      description: List of rooms
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ArrayOfRooms'
+    RoomDetailResponse:
+      description: Room detail
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RoomDetail'
+    ItemDetailResponse:
+      description: Item detail
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ItemDetail'
+    ItemListResponse:
+      description: List of items
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ArrayOfItems'
+    CharacterListResponse:
+      description: List of player characters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ArrayOfCharacters'
+    CharacterDetailResponse:
+      description: Character detail
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CharacterDetail'
+    PlayerListResponse:
+      description: List of players
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ArrayOfPlayers'
+    PlayerDetailResponse:
+      description: Player detail
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PlayerDetail'
+    EventDetailResponse:
+      description: Event detail
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_response_201'
+    LocationDetailResponse:
+      description: Location detail
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LocationDetail'
+    LocationListResponse:
+      description: List of locations
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ArrayOfLocation'
+  parameters:
+    gameId:
+      name: game_id
+      in: path
+      description: The id of the game to edit
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+    gameQueryId:
+      name: game_id
+      in: query
+      description: Game ID
+      required: false
+      style: form
+      explode: true
+      schema:
+        type: string
+    titleQuery:
+      name: title
+      in: query
+      description: Title field
+      required: false
+      style: form
+      explode: true
+      schema:
+        type: string
+    characterId:
+      name: character_id
+      in: path
+      description: Player Character ID
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+    eventId:
+      name: event_id
+      in: path
+      description: Event ID
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+    roomId:
+      name: room_id
+      in: path
+      description: UUID of a room
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+    itemId:
+      name: item_id
+      in: path
+      description: Item ID
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+    playerId:
+      name: player_id
+      in: path
+      description: Player ID
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+    locationId:
+      name: location_id
+      in: path
+      description: The id of the location
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+  requestBodies:
+    GameBody:
+      description: Game properties
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GameSubmit'
+      required: true
+    CharacterBody:
+      description: Settable Player Character properties
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CharacterSubmit'
+      required: true
+    TurnBody:
+      description: Turn submission
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TurnSubmit'
+      required: true
+    EventBody:
+      description: Turn submission
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EventSubmit'
+      required: true
+    RoomBody:
+      description: Settable Room properties
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RoomSubmit'
+      required: true
+    ItemBody:
+      description: Settable Item properties
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ItemSubmit'
+      required: true
+    PlayerBody:
+      description: Settable Player properties
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PlayerSubmit'
+      required: true
+    CharacterUpdateBody:
+      description: Engine settable Player Character properties
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CharacterDetail'
+      required: true
+    LocationBody:
+      description: Location properties
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LocationSubmit'
+      required: true
